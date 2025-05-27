@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
-import "../../Styles/todo.css";
+import "../../Styles/todoForm.css";
 
 const TodoForm = ({ editingTodo, onSaved, onCancel }) => {
   const { token } = useContext(AuthContext);
@@ -44,20 +44,16 @@ const TodoForm = ({ editingTodo, onSaved, onCancel }) => {
 
     try {
       setSubmitting(true);
-      let res;
-      if (editingTodo) {
-        res = await axios.put(
-          `http://localhost:5599/api/todos/${editingTodo._id}`,
-          { ...form, tags: tagsArr },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-      } else {
-        res = await axios.post(
-          'http://localhost:5599/api/todos',
-          { ...form, tags: tagsArr },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-      }
+      const endpoint = editingTodo
+        ? `http://localhost:5599/api/todos/${editingTodo._id}`
+        : 'http://localhost:5599/api/todos';
+
+      const method = editingTodo ? axios.put : axios.post;
+
+      const res = await method(endpoint, { ...form, tags: tagsArr }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
       onSaved(res.data);
       setForm({ title: '', description: '', dueDate: '', priority: 'Low', tags: '' });
     } catch (error) {
@@ -71,57 +67,21 @@ const TodoForm = ({ editingTodo, onSaved, onCancel }) => {
   return (
     <form onSubmit={handleSubmit} className="todo-form">
       <h3>{editingTodo ? 'Edit Task' : 'Add New Task'}</h3>
-      <input
-        name="title"
-        placeholder="Title"
-        value={form.title}
-        onChange={handleChange}
-        required
-        disabled={submitting}
-        className="todo-input"
-      />
-      <textarea
-        name="description"
-        placeholder="Description"
-        value={form.description}
-        onChange={handleChange}
-        rows={3}
-        disabled={submitting}
-        className="todo-textarea"
-      />
-      <input
-        type="date"
-        name="dueDate"
-        value={form.dueDate}
-        onChange={handleChange}
-        disabled={submitting}
-        className="todo-input"
-      />
-      <select
-        name="priority"
-        value={form.priority}
-        onChange={handleChange}
-        disabled={submitting}
-        className="todo-select"
-      >
+      <input name="title" placeholder="Title" value={form.title} onChange={handleChange} required disabled={submitting} />
+      <textarea name="description" placeholder="Description" value={form.description} onChange={handleChange} rows={3} disabled={submitting} />
+      <input type="date" name="dueDate" value={form.dueDate} onChange={handleChange} disabled={submitting} />
+      <select name="priority" value={form.priority} onChange={handleChange} disabled={submitting}>
         <option value="Low">Low Priority</option>
         <option value="Medium">Medium Priority</option>
         <option value="High">High Priority</option>
       </select>
-      <input
-        name="tags"
-        placeholder="Tags (comma separated)"
-        value={form.tags}
-        onChange={handleChange}
-        disabled={submitting}
-        className="todo-input"
-      />
+      <input name="tags" placeholder="Tags (comma separated)" value={form.tags} onChange={handleChange} disabled={submitting} />
       <div className="todo-form-actions">
-        <button type="submit" className="btn btn-submit" disabled={submitting}>
+        <button type="submit" className="btn-submit" disabled={submitting}>
           {submitting ? (editingTodo ? 'Updating...' : 'Adding...') : editingTodo ? 'Update Task' : 'Add Task'}
         </button>
         {editingTodo && (
-          <button type="button" className="btn btn-cancel" onClick={onCancel} disabled={submitting}>
+          <button type="button" className="btn-cancel" onClick={onCancel} disabled={submitting}>
             Cancel
           </button>
         )}

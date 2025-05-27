@@ -2,8 +2,8 @@ import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import TodoForm from './TodoForm';
-import "../../Styles/todo.css";
+import TodoForm from './TodoForm'; 
+import "../../Styles/todoList.css"
 
 const TodoList = () => {
   const { token, logout } = useContext(AuthContext);
@@ -92,7 +92,7 @@ const TodoList = () => {
 
   return (
     <div className="todo-container">
-      <div className="todo-header">
+       <div className="todo-header">
         <h2>Your To-Do List</h2>
         <button onClick={handleLogout} className="btn btn-logout">
           Logout
