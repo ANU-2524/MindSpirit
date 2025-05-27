@@ -1,0 +1,90 @@
+.todo-form {
+  background-color: #f4f4f4;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 20px auto;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+}
+
+.todo-form h3 {
+  color: #ff6b00;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.6rem;
+}
+
+.todo-form input,
+.todo-form textarea,
+.todo-form select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.todo-form input:focus,
+.todo-form textarea:focus,
+.todo-form select:focus {
+  border-color: #ff6b00;
+  outline: none;
+}
+
+.todo-form textarea {
+  resize: vertical;
+}
+
+.todo-form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.btn-submit,
+.btn-cancel {
+  flex: 1;
+  padding: 12px 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit {
+  background-color: #ff6b00;
+  color: white;
+}
+
+.btn-submit:hover {
+  background-color: #e65c00;
+}
+
+.btn-cancel {
+  background-color: #b0b0b0;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background-color: #999999;
+}
+
+@media (max-width: 500px) {
+  .todo-form {
+    padding: 16px;
+  }
+
+  .todo-form-actions {
+    flex-direction: column;
+  }
+
+  .btn-submit,
+  .btn-cancel {
+    width: 100%;
+  }
+}
