@@ -4,7 +4,7 @@ import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import TodoList from './components/Todos/TodoList';
 import { AuthProvider, AuthContext } from './context/AuthContext';
-
+import "./App.css"
 const PrivateRoute = ({ children }) => {
   const { token } = useContext(AuthContext);
   return token ? children : <Navigate to="/login" />;
@@ -13,6 +13,7 @@ const PrivateRoute = ({ children }) => {
 function App() {
   return (
     <AuthProvider>
+      <div className="app-container">
       <BrowserRouter>
         <Routes>
           <Route
@@ -29,6 +30,7 @@ function App() {
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </BrowserRouter>
+      </div>
     </AuthProvider>
   );
 }
