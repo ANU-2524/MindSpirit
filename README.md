@@ -1,6 +1,7 @@
 # 🧠 MindSpirit
 
-Deployed Frontend 🌐: [MindSpirit Live App](mind-spirit.netlify.app) 
+Deployed Frontend 🌐: [MindSpirit Live App](https://mind-spirit.netlify.app)
+
 
 **MindSpirit** is more than just a to-do app — it's your peaceful digital companion, built to bring clarity, structure, and calm into your daily life.
 
