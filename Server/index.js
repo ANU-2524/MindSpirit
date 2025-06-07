@@ -7,7 +7,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: "https://mind-spirit.netlify.app/", // replace with your real URL
+  origin: "https://mind-spirit.netlify.app", // replace with your real URL
   credentials: true,
 }));
 
