@@ -5,6 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import "../../Styles/login.css"
 
 const Login = () => {
+  const BaseUrl = import.meta.env.VITE_BACKEND_URL; 
   const { login } = useContext(AuthContext);
   const [form, setForm] = useState({ email: '', password: '' });
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5599/api/auth/login', form);
+      const res = await axios.post(`${BaseUrl}/api/auth/login`, form);
       login(res.data.token, res.data.user);
       navigate('/');
     } catch (error) {

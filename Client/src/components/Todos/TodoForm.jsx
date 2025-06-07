@@ -4,6 +4,7 @@ import { AuthContext } from '../../context/AuthContext';
 import "../../Styles/todoForm.css";
 
 const TodoForm = ({ editingTodo, onSaved, onCancel }) => {
+  const BaseUrl = import.meta.env.VITE_BACKEND_URL;
   const { token } = useContext(AuthContext);
   const [form, setForm] = useState({
     title: '',
@@ -45,8 +46,8 @@ const TodoForm = ({ editingTodo, onSaved, onCancel }) => {
     try {
       setSubmitting(true);
       const endpoint = editingTodo
-        ? `http://localhost:5599/api/todos/${editingTodo._id}`
-        : 'http://localhost:5599/api/todos';
+        ? `${BaseUrl}/api/todos/${editingTodo._id}`
+        : `${BaseUrl}/api/todos`;
 
       const method = editingTodo ? axios.put : axios.post;
 

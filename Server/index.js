@@ -6,10 +6,14 @@ const dotenv = require('dotenv');
 dotenv.config();
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "https://mind-spirit.netlify.app/", // replace with your real URL
+  credentials: true,
+}));
+
 app.use(express.json());
 
-// Routes
+// Routes6
 const authRoutes = require('./routes/auth.js');
 const todoRoutes = require('./routes/todos.js');
 

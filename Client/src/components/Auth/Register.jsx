@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import "../../Styles/register.css"
 const Register = () => {
+  const BaseUrl = import.meta.env.VITE_BACKEND_URL;
+  // console.log(BaseUrl) ;
   const [form, setForm] = useState({ username: '', email: '', password: '' });
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5599/api/auth/register', form);
+      const res = await axios.post(`${BaseUrl}/api/auth/register`, form);
       // Assume backend responds with { token, user }
       login(res.data.token, res.data.user);
       navigate('/');

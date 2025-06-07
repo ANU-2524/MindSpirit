@@ -6,6 +6,8 @@ import TodoForm from './TodoForm';
 import "../../Styles/todoList.css"
 
 const TodoList = () => {
+  
+  const BaseUrl = import.meta.env.VITE_BACKEND_URL;
   const { token, logout } = useContext(AuthContext);
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,7 +17,7 @@ const TodoList = () => {
 
   const fetchTodos = async () => {
     try {
-      const res = await axios.get('http://localhost:5599/api/todos', {
+      const res = await axios.get(`${BaseUrl}/api/todos`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setTodos(res.data);
@@ -36,7 +38,7 @@ const TodoList = () => {
 
     try {
       setActionLoading(true);
-      await axios.delete(`http://localhost:5599/api/todos/${id}`, {
+      await axios.delete(`${BaseUrl}/api/todos/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setTodos((prev) => prev.filter((todo) => todo._id !== id));
@@ -52,7 +54,7 @@ const TodoList = () => {
     try {
       setActionLoading(true);
       const updated = await axios.put(
-        `http://localhost:5599/api/todos/${todo._id}`,
+         `${BaseUrl}/api/todos/${todo._id}`,
         { isCompleted: !todo.isCompleted },
         { headers: { Authorization: `Bearer ${token}` } }
       );
