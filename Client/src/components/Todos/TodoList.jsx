@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useCallback } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -11,11 +11,13 @@ const TodoList = () => {
   const { token, logout } = useContext(AuthContext);
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [editingTodo, setEditingTodo] = useState(null);
   const [actionLoading, setActionLoading] = useState(false);
   const navigate = useNavigate();
 
-  const fetchTodos = async () => {
+  const fetchTodos = useCallback(async () => {
+    setError(null);
     try {
       const res = await axios.get(`${BaseUrl}/api/todos`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -23,19 +25,19 @@ const TodoList = () => {
       setTodos(res.data);
     } catch (error) {
       console.error('Fetch Todos Error:', error);
-      alert('Error fetching todos');
+      setError('Error fetching todos. Please try again.');
     } finally {
       setLoading(false);
     }
-  };
+  }, [BaseUrl, token]);
 
   useEffect(() => {
     if (token) fetchTodos();
-  }, [token]);
+  }, [token, fetchTodos]);
 
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this task?')) return;
-
+    setError(null);
     try {
       setActionLoading(true);
       await axios.delete(`${BaseUrl}/api/todos/${id}`, {
@@ -44,13 +46,14 @@ const TodoList = () => {
       setTodos((prev) => prev.filter((todo) => todo._id !== id));
     } catch (error) {
       console.error('Delete Todo Error:', error);
-      alert('Error deleting todo');
+      setError('Error deleting todo.');
     } finally {
       setActionLoading(false);
     }
   };
 
   const toggleComplete = async (todo) => {
+    setError(null);
     try {
       setActionLoading(true);
       const updated = await axios.put(
@@ -61,7 +64,7 @@ const TodoList = () => {
       setTodos((prev) => prev.map((t) => (t._id === todo._id ? updated.data : t)));
     } catch (error) {
       console.error('Toggle Complete Error:', error);
-      alert('Error updating todo');
+      setError('Error updating todo.');
     } finally {
       setActionLoading(false);
     }
@@ -90,20 +93,22 @@ const TodoList = () => {
   };
 
   if (!token) return <p className="todo-message">Please login to see your tasks.</p>;
-  if (loading) return <p className="todo-message">Loading tasks...</p>;
+  if (loading) return <div className="todo-message"><span className="loader"></span> Loading tasks...</div>;
 
   return (
     <div className="todo-container">
-       <div className="todo-header">
+      <div className="todo-header">
         <h2>Your To-Do List</h2>
         <button onClick={handleLogout} className="btn btn-logout">
           Logout
         </button>
       </div>
 
+      {error && <div className="todo-error">{error}</div>}
+
       <TodoForm editingTodo={editingTodo} onSaved={onTodoSaved} onCancel={stopEdit} />
 
-      {todos.length === 0 && <p className="todo-message">No tasks found. Add one!</p>}
+      {todos.length === 0 && !error && <p className="todo-message">No tasks found. Add one!</p>}
 
       <ul className="todo-list">
         {todos.map((todo) => (
